@@ -532,61 +532,132 @@
     .pillar-text span { font-size: 14px; color: var(--muted); }
 
     /* ── Testimonials ── */
-    .testimonials-section { padding: 96px 24px; }
-    .testimonials-section .section-header { text-align: center; }
-    .testimonials-section .section-sub { margin: 0 auto; }
+    /* ── Animated Testimonials ── */
+    .testimonials-section { padding: 96px 24px; background: var(--card-bg); }
 
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+    .testimonials-inner {
       max-width: 1280px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    /* Left panel */
+    .testimonials-left { display: flex; flex-direction: column; justify-content: center; gap: 24px; }
+    .testimonials-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      color: var(--fg);
+    }
+    .testimonials-left h2 em { font-style: italic; color: var(--terra); }
+    .testimonials-left p { font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 420px; }
+
+    /* Dot navigation */
+    .testimonial-dots { display: flex; align-items: center; gap: 10px; padding-top: 8px; }
+    .testimonial-dot {
+      height: 10px;
+      border-radius: 9999px;
+      background: rgba(45,58,49,.15);
+      border: none;
+      cursor: pointer;
+      transition: width .4s ease, background .4s ease;
+      width: 10px;
+      padding: 0;
+    }
+    .testimonial-dot.active { width: 36px; background: var(--fg); }
+
+    /* Right panel — card stack */
+    .testimonials-right {
+      position: relative;
+      min-height: 360px;
+    }
+    .testimonial-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateX(48px) scale(.97);
+      transition: opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+    }
+    .testimonial-slide.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
     }
     .testimonial-card {
       background: var(--white);
       border-radius: var(--radius-card);
-      padding: 36px 32px;
+      padding: 40px;
       border: 1px solid var(--border);
-      transition: transform .5s ease-out, box-shadow .5s ease-out;
+      box-shadow: var(--shadow-lg);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
     }
-    .testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
-    .testimonial-card:nth-child(2) { transform: translateY(20px); }
-    .testimonial-card:nth-child(2):hover { transform: translateY(16px); }
-
+    .testimonial-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 16px;
+      left: 28px;
+      font-family: 'Playfair Display', serif;
+      font-size: 96px;
+      line-height: 1;
+      color: var(--terra);
+      opacity: .12;
+      pointer-events: none;
+    }
     .testimonial-stars { color: #E8A87C; font-size: 16px; letter-spacing: 3px; margin-bottom: 20px; }
     .testimonial-card blockquote {
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 18px;
-      line-height: 1.7;
+      font-size: 19px;
+      line-height: 1.75;
       color: var(--fg);
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      flex: 1;
     }
-    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .testimonial-divider { height: 1px; background: var(--border); margin-bottom: 20px; }
+    .testimonial-author { display: flex; align-items: center; gap: 14px; }
     .author-avatar {
-      width: 44px;
-      height: 44px;
+      width: 48px; height: 48px;
       border-radius: 50%;
       background: var(--card-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
       font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--primary);
-      flex-shrink: 0;
+      font-weight: 700; font-size: 18px;
+      color: var(--primary); flex-shrink: 0;
     }
     .author-info strong { display: block; font-size: 14px; font-weight: 600; color: var(--fg); }
     .author-info span { font-size: 12px; color: var(--muted); }
-    .google-badge {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
+    .google-badge { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    /* Decorative blobs */
+    .t-deco-1 {
+      position: absolute; bottom: -20px; left: -20px;
+      width: 80px; height: 80px;
+      border-radius: var(--radius-card);
+      background: var(--primary); opacity: .07;
+      pointer-events: none;
+    }
+    .t-deco-2 {
+      position: absolute; top: -20px; right: -20px;
+      width: 80px; height: 80px;
+      border-radius: var(--radius-card);
+      background: var(--terra); opacity: .07;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .testimonials-inner { grid-template-columns: 1fr; gap: 48px; }
+      .testimonials-right { min-height: 420px; }
     }
 
     /* ── Promo ── */
@@ -1165,63 +1236,88 @@
 
 <!-- ── Testimonials ── -->
 <section class="testimonials-section" id="depoimentos">
-  <div class="container">
-    <div class="section-header reveal" style="text-align:center;">
+  <div class="testimonials-inner">
+
+    <!-- Left: heading + dots -->
+    <div class="testimonials-left reveal">
       <span class="section-tag">Depoimentos</span>
-      <h2 class="section-title">O que nossas<br>clientes <em>dizem</em></h2>
-      <p class="section-sub">Mais de 221 avaliações com nota 4,8 no Google. São anos de confiança e satisfação.</p>
+      <h2>O que nossas<br>clientes <em>dizem</em></h2>
+      <p>Mais de 221 avaliações com nota 4,8 no Google. Anos de confiança, carinho e resultados que falam por si.</p>
+      <div class="testimonial-dots" id="testimonialDots">
+        <button class="testimonial-dot active" data-index="0" aria-label="Depoimento 1"></button>
+        <button class="testimonial-dot" data-index="1" aria-label="Depoimento 2"></button>
+        <button class="testimonial-dot" data-index="2" aria-label="Depoimento 3"></button>
+      </div>
     </div>
 
-    <div class="testimonials-grid">
-      <!-- 1 -->
-      <div class="testimonial-card reveal">
-        <div class="testimonial-stars">★★★★★</div>
-        <blockquote>"Sou de SP e tive um casamento em Ribeirão. Estava perdida, sem saber onde me arrumar. Foi quando minha irmã pesquisou e achamos este salão. Foi Deus que colocou essas maravilhosas no nosso caminho!"</blockquote>
-        <div class="testimonial-author">
-          <div class="author-avatar">K</div>
-          <div class="author-info">
-            <strong>Kedma Cristina</strong>
-            <span>Local Guide · 29 avaliações</span>
-            <div class="google-badge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-              Google Maps
+    <!-- Right: animated cards -->
+    <div class="testimonials-right reveal reveal-delay-1">
+
+      <!-- Card 1 -->
+      <div class="testimonial-slide active">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <blockquote>"Sou de SP e tive um casamento em Ribeirão. Estava perdida, sem saber onde me arrumar. Foi quando minha irmã pesquisou e achamos este salão. Foi Deus que colocou essas maravilhosas no nosso caminho!"</blockquote>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <div class="author-avatar">K</div>
+            <div class="author-info">
+              <strong>Kedma Cristina</strong>
+              <span>Local Guide · 29 avaliações</span>
+              <div class="google-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                Google Maps
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- 2 -->
-      <div class="testimonial-card reveal reveal-delay-1">
-        <div class="testimonial-stars">★★★★★</div>
-        <blockquote>"É simplesmente incrível! Desde o atendimento atencioso até os serviços impecáveis, cada detalhe faz a diferença. O ambiente é acolhedor e o resultado sempre supera as expectativas."</blockquote>
-        <div class="testimonial-author">
-          <div class="author-avatar">L</div>
-          <div class="author-info">
-            <strong>Luana</strong>
-            <span>2 avaliações</span>
-            <div class="google-badge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-              Google Maps
+
+      <!-- Card 2 -->
+      <div class="testimonial-slide">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <blockquote>"É simplesmente incrível! Desde o atendimento atencioso até os serviços impecáveis, cada detalhe faz a diferença. O ambiente é acolhedor e o resultado sempre supera as expectativas."</blockquote>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <div class="author-avatar">L</div>
+            <div class="author-info">
+              <strong>Luana</strong>
+              <span>2 avaliações</span>
+              <div class="google-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                Google Maps
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- 3 -->
-      <div class="testimonial-card reveal reveal-delay-2">
-        <div class="testimonial-stars">★★★★★</div>
-        <blockquote>"Atendimento excelente, mulheres profissionais e super atenciosas. Custo-benefício incrível — a promoção de depilação às terças é imperdível. Recomendo demais!"</blockquote>
-        <div class="testimonial-author">
-          <div class="author-avatar">N</div>
-          <div class="author-info">
-            <strong>Natália Junqueira</strong>
-            <span>Local Guide · 12 avaliações</span>
-            <div class="google-badge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-              Google Maps
+
+      <!-- Card 3 -->
+      <div class="testimonial-slide">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <blockquote>"Atendimento excelente, mulheres profissionais e super atenciosas. Custo-benefício incrível — a promoção de depilação às terças é imperdível. Recomendo demais!"</blockquote>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <div class="author-avatar">N</div>
+            <div class="author-info">
+              <strong>Natália Junqueira</strong>
+              <span>Local Guide · 12 avaliações</span>
+              <div class="google-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                Google Maps
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Decorative blobs -->
+      <div class="t-deco-1"></div>
+      <div class="t-deco-2"></div>
     </div>
+
   </div>
 </section>
 
@@ -1399,6 +1495,36 @@
     });
   }, { threshold: 0.1 });
   revealEls.forEach(el => observer.observe(el));
+
+  // ── Animated Testimonials ──
+  (function() {
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const dots   = document.querySelectorAll('.testimonial-dot');
+    let current  = 0;
+    let timer;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = (index + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function startTimer() {
+      timer = setInterval(() => goTo(current + 1), 6000);
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        clearInterval(timer);
+        goTo(parseInt(dot.dataset.index));
+        startTimer();
+      });
+    });
+
+    startTimer();
+  })();
 
   // WhatsApp form submit
   function handleSubmit(e) {
