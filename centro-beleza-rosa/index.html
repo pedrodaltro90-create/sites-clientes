@@ -310,6 +310,7 @@
       transition: transform .9s ease-out;
     }
     .hero-img-wrap:hover img { transform: scale(1.05); }
+    .hero-img-wrap { will-change: border-radius, transform; }
 
     .hero-card {
       position: absolute;
@@ -1761,6 +1762,40 @@
     });
   }, { threshold: 0.1 });
   revealEls.forEach(el => observer.observe(el));
+
+  // ── Scroll Expansion Hero ──
+  (function() {
+    const wrap = document.querySelector('.hero-img-wrap');
+    if (!wrap) return;
+    const section = wrap.closest('section');
+    let ticking = false;
+
+    function update() {
+      const heroH   = section.offsetHeight;
+      const progress = Math.min(Math.max(window.scrollY / heroH, 0), 1);
+      const p = 1 - progress; // 1 = blob total, 0 = retângulo
+
+      // Blob orgânico → retângulo arredondado suavemente
+      const br = p > 0.01
+        ? `${50 * p}% ${50 * p}% ${50 * p}% ${50 * p}% / ${60 * p}% ${60 * p}% ${40 * p}% ${40 * p}%`
+        : '40px';
+
+      wrap.style.borderRadius = br;
+      // Leve escala cinematográfica
+      wrap.style.transform = `scale(${1 + progress * 0.06})`;
+      // Parallax suave na imagem interna
+      const img = wrap.querySelector('img');
+      if (img) img.style.transform = `scale(${1.05 + progress * 0.04}) translateY(${-progress * 14}px)`;
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+
+    update();
+  })();
 
   // ── Magnetize Button ──
   (function() {
