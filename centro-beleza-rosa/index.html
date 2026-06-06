@@ -257,29 +257,16 @@
     .hero h1 em { font-style: italic; color: var(--terra); }
 
     /* ── Animated Text Cycle ── */
-    .text-cycle-wrap {
-      display: inline-block;
-      position: relative;
-      overflow: hidden;
-      vertical-align: bottom;
-    }
-    .text-cycle-word {
-      display: inline-block;
+    .hero-cycle-word {
       font-style: italic;
       color: var(--terra);
-      white-space: nowrap;
-      animation: textCycleIn .45s cubic-bezier(.22,1,.36,1) forwards;
+      display: inline-block;
+      transition: opacity 1.1s ease, filter 1.1s ease, transform 1.1s ease;
     }
-    .text-cycle-word.exiting {
-      animation: textCycleOut .3s cubic-bezier(.55,0,1,.45) forwards;
-    }
-    @keyframes textCycleIn {
-      from { opacity: 0; transform: translateY(-18px); filter: blur(8px); }
-      to   { opacity: 1; transform: translateY(0);     filter: blur(0px); }
-    }
-    @keyframes textCycleOut {
-      from { opacity: 1; transform: translateY(0);    filter: blur(0px); }
-      to   { opacity: 0; transform: translateY(18px); filter: blur(8px); }
+    .hero-cycle-word.fading {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(-6px);
     }
     .hero p {
       font-size: 18px;
@@ -1053,7 +1040,7 @@
       <h1 class="reveal">
         O lugar onde<br>
         sua beleza<br>
-        <span class="text-cycle-wrap" id="textCycle"><span class="text-cycle-word">floresce.</span></span>
+        <em class="hero-cycle-word" id="cycleWord">floresce.</em>
       </h1>
 
       <p class="reveal reveal-delay-1">
@@ -1525,21 +1512,23 @@
   // ── Animated Text Cycle ──
   (function() {
     const words   = ['floresce.', 'transforma.', 'brilha.', 'encanta.'];
-    const wrap    = document.getElementById('textCycle');
-    if (!wrap) return;
+    const el      = document.getElementById('cycleWord');
+    if (!el) return;
     let current   = 0;
 
     function next() {
-      const old = wrap.querySelector('.text-cycle-word');
-      if (old) {
-        old.classList.add('exiting');
-        old.addEventListener('animationend', () => old.remove(), { once: true });
-      }
-      current = (current + 1) % words.length;
-      const span = document.createElement('span');
-      span.className = 'text-cycle-word';
-      span.textContent = words[current];
-      wrap.appendChild(span);
+      // 1. Fade out suavemente (1.1s de transition CSS)
+      el.classList.add('fading');
+
+      setTimeout(() => {
+        // 2. Troca o texto enquanto invisível
+        current = (current + 1) % words.length;
+        el.textContent = words[current];
+        // Força reflow para a transition ser reconhecida
+        void el.offsetWidth;
+        // 3. Fade in suavemente
+        el.classList.remove('fading');
+      }, 1150); // Espera a saída completar
     }
 
     setInterval(next, 2800);
