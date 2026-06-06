@@ -1121,15 +1121,15 @@
 <section class="stats-section">
   <div class="stats-grid">
     <div class="stat-item reveal">
-      <div class="stat-number">4<em>,8</em></div>
+      <div class="stat-number"><span class="count-up" data-target="4" data-decimal=",8">0</span><em>,8</em></div>
       <div class="stat-label">Avaliação Google</div>
     </div>
     <div class="stat-item reveal reveal-delay-1">
-      <div class="stat-number">221</div>
+      <div class="stat-number"><span class="count-up" data-target="221">0</span></div>
       <div class="stat-label">Avaliações</div>
     </div>
     <div class="stat-item reveal reveal-delay-2">
-      <div class="stat-number">10<em>+</em></div>
+      <div class="stat-number"><span class="count-up" data-target="10">0</span><em>+</em></div>
       <div class="stat-label">Anos de Experiência</div>
     </div>
     <div class="stat-item reveal reveal-delay-3">
@@ -1534,6 +1534,39 @@
     });
   }, { threshold: 0.1 });
   revealEls.forEach(el => observer.observe(el));
+
+  // ── Animated Numbers ──
+  (function() {
+    const easeOutExpo = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
+    function animateCount(el) {
+      const target   = parseInt(el.dataset.target);
+      const duration = 2000;
+      const start    = performance.now();
+
+      function step(now) {
+        const elapsed  = Math.min(now - start, duration);
+        const progress = easeOutExpo(elapsed / duration);
+        const value    = Math.floor(progress * target);
+        el.textContent = value;
+        if (elapsed < duration) requestAnimationFrame(step);
+        else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    }
+
+    const counters = document.querySelectorAll('.count-up');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCount(e.target);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(c => obs.observe(c));
+  })();
 
   // ── Handwriting Underline ──
   (function() {
