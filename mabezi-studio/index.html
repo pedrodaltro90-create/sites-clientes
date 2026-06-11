@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mabezi Studio – Ribeirão Preto</title>
+  <meta name="description" content="Studio de maquiagem e penteados no Centro de Ribeirão Preto - SP. Pacote flash, make e escova profissional. Agende com Mabezi Studio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --bg:          #F9F8F4;
+      --fg:          #2D3A31;
+      --primary:     #8C9A84;
+      --secondary:   #DCCFC2;
+      --border:      #E6E2DA;
+      --terra:       #C27B66;
+      --white:       #FFFFFF;
+      --card-bg:     #F2F0EB;
+      --muted:       #7A8A7E;
+
+      --shadow-sm:   0 4px 6px -1px rgba(45,58,49,.05);
+      --shadow-md:   0 10px 15px -3px rgba(45,58,49,.05);
+      --shadow-lg:   0 20px 40px -10px rgba(45,58,49,.08);
+      --shadow-xl:   0 25px 50px -12px rgba(45,58,49,.15);
+
+      --radius-card: 24px;
+      --radius-img:  40px;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Paper Grain (mandatory) ── */
+    .grain {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      opacity: .015;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Navigation ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(249,248,244,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--fg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-icon svg { width: 18px; height: 18px; stroke: var(--bg); fill: none; stroke-width: 1.5; }
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--fg);
+      letter-spacing: -.3px;
+    }
+    .logo-text span { font-style: italic; color: var(--terra); }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: .02em;
+      transition: color .3s;
+    }
+    .nav-links a:hover { color: var(--fg); }
+
+    .btn-nav {
+      background: var(--fg);
+      color: var(--white);
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background .3s, transform .3s;
+      white-space: nowrap;
+    }
+    .btn-nav:hover { background: var(--terra); transform: translateY(-1px); }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--fg);
+      margin: 5px 0;
+      transition: .3s;
+    }
+
+    /* Mobile Nav */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--bg);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--fg);
+      text-decoration: none;
+      transition: color .3s;
+    }
+    .mobile-menu a:hover { color: var(--terra); }
+    .mobile-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--fg);
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--fg);
+      color: var(--white);
+      padding: 14px 30px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background .3s, transform .3s, box-shadow .3s;
+    }
+    .btn-primary:hover {
+      background: var(--terra);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    /* ── Magnetize Particles ── */
+    .magnet-btn { overflow: visible; }
+    .magnet-particle {
+      position: absolute;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0;
+      pointer-events: none;
+      top: 50%; left: 50%;
+      transition: transform .6s cubic-bezier(.175,.885,.32,1.275), opacity .4s ease;
+      will-change: transform;
+    }
+    .magnet-btn:hover .magnet-particle {
+      transform: translate(-50%, -50%) !important;
+      opacity: 1;
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--primary);
+      padding: 14px 30px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--primary);
+      cursor: pointer;
+      transition: background .3s, color .3s, transform .3s;
+    }
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 80px 24px 96px;
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .hero-badge .star { color: #E8A87C; font-size: 14px; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 5.5vw, 76px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      margin-bottom: 24px;
+      color: var(--fg);
+    }
+    .hero h1 em { font-style: italic; color: var(--terra); }
+
+    /* ── Animated Text Cycle ── */
+    .hero-cycle-word {
+      font-style: italic;
+      color: var(--terra);
+      display: inline-block;
+      transition: opacity 1.1s ease, filter 1.1s ease, transform 1.1s ease;
+    }
+    .hero-cycle-word.fading {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(-6px);
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .hero-visual { position: relative; }
+    .hero-img-wrap {
+      position: relative;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      background: var(--secondary);
+    }
+    .hero-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .9s ease-out;
+    }
+    .hero-img-wrap:hover img { transform: scale(1.05); }
+    .hero-img-wrap { will-change: border-radius, transform; }
+
+    .hero-card {
+      position: absolute;
+      bottom: -20px;
+      left: -24px;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 16px 20px;
+      box-shadow: var(--shadow-xl);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 220px;
+    }
+    .hero-card-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--card-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .hero-card-icon svg { width: 18px; height: 18px; stroke: var(--terra); fill: none; stroke-width: 1.5; }
+    .hero-card-text { font-size: 13px; }
+    .hero-card-text strong { display: block; font-weight: 600; color: var(--fg); }
+    .hero-card-text span { color: var(--muted); font-size: 12px; }
+
+    .hero-card-2 {
+      position: absolute;
+      top: 20px;
+      right: -20px;
+      background: var(--fg);
+      border-radius: 16px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-card-2 .stars { color: #F4C96A; font-size: 13px; letter-spacing: 2px; }
+    .hero-card-2-text { font-size: 12px; color: rgba(249,248,244,.8); }
+    .hero-card-2-text strong { display: block; font-size: 20px; font-weight: 700; color: var(--bg); font-family: 'Playfair Display', serif; }
+
+    /* Decorative line */
+    .deco-line {
+      position: absolute;
+      right: -40px;
+      top: 30%;
+      width: 80px;
+      opacity: .3;
+    }
+
+    /* ── Stats ── */
+    .stats-section {
+      background: var(--fg);
+      padding: 64px 24px;
+    }
+    .stats-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .stat-item {
+      padding: 32px 40px;
+      text-align: center;
+      border-right: 1px solid rgba(249,248,244,.1);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--bg);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-number em { font-style: italic; color: var(--secondary); }
+    .stat-label { font-size: 14px; color: rgba(249,248,244,.55); letter-spacing: .06em; text-transform: uppercase; }
+
+    /* ── Services ── */
+    .services-section { padding: 96px 24px; }
+    .section-header { margin-bottom: 64px; }
+    .section-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      color: var(--fg);
+    }
+    .section-title em { font-style: italic; color: var(--terra); }
+    .section-sub {
+      font-size: 17px;
+      color: var(--muted);
+      margin-top: 16px;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 36px 32px;
+      border: 1px solid var(--border);
+      transition: transform .5s ease-out, box-shadow .5s ease-out;
+      cursor: default;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+      border-color: transparent;
+    }
+    .service-card:nth-child(2) { transform: translateY(32px); }
+    .service-card:nth-child(2):hover { transform: translateY(26px); }
+    .service-card:nth-child(5) { transform: translateY(32px); }
+    .service-card:nth-child(5):hover { transform: translateY(26px); }
+
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      transition: background .3s;
+    }
+    .service-card:hover .service-icon { background: var(--secondary); }
+    .service-icon svg { width: 22px; height: 22px; stroke: var(--fg); fill: none; stroke-width: 1.5; }
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--fg);
+    }
+    .service-card p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+    .service-promo {
+      display: inline-block;
+      margin-top: 16px;
+      background: var(--terra);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 9999px;
+    }
+
+    /* ── Gallery ── */
+    .gallery-section { padding: 96px 0; overflow: hidden; }
+    .gallery-header {
+      max-width: 1280px;
+      margin: 0 auto 48px;
+      padding: 0 24px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .gallery-header-left { display: flex; flex-direction: column; gap: 12px; }
+    .gallery-header-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      color: var(--fg);
+    }
+    .gallery-header-left h2 em { font-style: italic; color: var(--terra); }
+    .gallery-header-left p { font-size: 16px; color: var(--muted); max-width: 480px; }
+    .gallery-nav { display: flex; gap: 8px; flex-shrink: 0; }
+    .gallery-nav-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background .3s, border-color .3s, transform .3s;
+      flex-shrink: 0;
+    }
+    .gallery-nav-btn:hover { background: var(--fg); border-color: var(--fg); }
+    .gallery-nav-btn:hover svg { stroke: var(--bg); }
+    .gallery-nav-btn:disabled { opacity: .35; pointer-events: none; }
+    .gallery-nav-btn svg { width: 18px; height: 18px; stroke: var(--fg); fill: none; stroke-width: 1.5; transition: stroke .3s; }
+
+    .gallery-track-wrap { overflow: hidden; }
+    .gallery-track {
+      display: flex;
+      gap: 20px;
+      padding: 0 24px;
+      transition: transform .5s cubic-bezier(.4,0,.2,1);
+      will-change: transform;
+    }
+    .gallery-card {
+      flex: 0 0 320px;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      position: relative;
+      min-height: 420px;
+      cursor: pointer;
+    }
+    @media (min-width: 768px) { .gallery-card { flex: 0 0 360px; } }
+
+    .gallery-card img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .7s ease-out;
+    }
+    .gallery-card:hover img { transform: scale(1.06); }
+    .gallery-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 30%, rgba(45,58,49,.75) 100%);
+    }
+    .gallery-card-content {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px;
+      color: var(--bg);
+    }
+    .gallery-card-tag {
+      display: inline-block;
+      background: rgba(249,248,244,.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(249,248,244,.2);
+      border-radius: 9999px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+    .gallery-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .gallery-card p {
+      font-size: 13px;
+      opacity: .75;
+      line-height: 1.5;
+    }
+
+    .gallery-dots {
+      display: flex; justify-content: center; gap: 8px;
+      margin-top: 32px;
+    }
+    .gallery-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      border: none; cursor: pointer;
+      transition: background .3s, transform .3s;
+      padding: 0;
+    }
+    .gallery-dot.active { background: var(--fg); transform: scale(1.3); }
+
+    /* ── About ── */
+    .about-section {
+      padding: 96px 24px;
+      background: var(--card-bg);
+    }
+    .about-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .about-img {
+      border-radius: var(--radius-img);
+      overflow: hidden;
+      background: var(--secondary);
+    }
+    .about-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .7s ease-out;
+    }
+    .about-img:hover img { transform: scale(1.05); }
+    .about-img-1 { aspect-ratio: 3/4; }
+    .about-img-2 { aspect-ratio: 3/4; margin-top: 48px; }
+    .about-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, var(--secondary), var(--border));
+      min-height: 200px;
+    }
+    .about-img-placeholder svg { width: 40px; height: 40px; stroke: var(--muted); fill: none; stroke-width: 1; opacity: .5; }
+
+    .about-content { padding: 16px 0; }
+    .about-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      margin-bottom: 24px;
+      color: var(--fg);
+    }
+    .about-content h2 em { font-style: italic; color: var(--terra); }
+    .about-content p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .about-pillars { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+    .pillar {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .pillar-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .pillar-icon svg { width: 18px; height: 18px; stroke: var(--primary); fill: none; stroke-width: 1.5; }
+    .pillar-text strong { display: block; font-weight: 600; font-size: 15px; color: var(--fg); margin-bottom: 2px; }
+    .pillar-text span { font-size: 14px; color: var(--muted); }
+
+    /* ── Testimonials ── */
+    /* ── Animated Testimonials ── */
+    .testimonials-section { padding: 96px 24px; background: var(--card-bg); }
+
+    .testimonials-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    /* Left panel */
+    .testimonials-left { display: flex; flex-direction: column; justify-content: center; gap: 24px; }
+    .testimonials-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      color: var(--fg);
+    }
+    .testimonials-left h2 em { font-style: italic; color: var(--terra); }
+    .testimonials-left p { font-size: 17px; color: var(--muted); line-height: 1.75; max-width: 420px; }
+
+    /* Dot navigation */
+    .testimonial-dots { display: flex; align-items: center; gap: 10px; padding-top: 8px; }
+    .testimonial-dot {
+      height: 10px;
+      border-radius: 9999px;
+      background: rgba(45,58,49,.15);
+      border: none;
+      cursor: pointer;
+      transition: width .4s ease, background .4s ease;
+      width: 10px;
+      padding: 0;
+    }
+    .testimonial-dot.active { width: 36px; background: var(--fg); }
+
+    /* Right panel — card stack */
+    .testimonials-right {
+      position: relative;
+      min-height: 360px;
+    }
+    .testimonial-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateX(48px) scale(.97);
+      transition: opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+    }
+    .testimonial-slide.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+    .testimonial-card {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 40px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .testimonial-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 16px;
+      left: 28px;
+      font-family: 'Playfair Display', serif;
+      font-size: 96px;
+      line-height: 1;
+      color: var(--terra);
+      opacity: .12;
+      pointer-events: none;
+    }
+    .testimonial-stars { color: #E8A87C; font-size: 16px; letter-spacing: 3px; margin-bottom: 20px; }
+    .testimonial-card blockquote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 19px;
+      line-height: 1.75;
+      color: var(--fg);
+      margin-bottom: 28px;
+      flex: 1;
+    }
+    .testimonial-divider { height: 1px; background: var(--border); margin-bottom: 20px; }
+    .testimonial-author { display: flex; align-items: center; gap: 14px; }
+    .author-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; font-size: 18px;
+      color: var(--primary); flex-shrink: 0;
+    }
+    .author-info strong { display: block; font-size: 14px; font-weight: 600; color: var(--fg); }
+    .author-info span { font-size: 12px; color: var(--muted); }
+    .google-badge { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    /* Decorative blobs */
+    .t-deco-1 {
+      position: absolute; bottom: -20px; left: -20px;
+      width: 80px; height: 80px;
+      border-radius: var(--radius-card);
+      background: var(--primary); opacity: .07;
+      pointer-events: none;
+    }
+    .t-deco-2 {
+      position: absolute; top: -20px; right: -20px;
+      width: 80px; height: 80px;
+      border-radius: var(--radius-card);
+      background: var(--terra); opacity: .07;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .testimonials-inner { grid-template-columns: 1fr; gap: 48px; }
+      .testimonials-right { min-height: 420px; }
+    }
+
+    /* ── Promo ── */
+    .promo-section {
+      padding: 80px 24px;
+      background: var(--secondary);
+    }
+    .promo-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .promo-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 700;
+      color: var(--fg);
+      line-height: 1.2;
+    }
+    .promo-content h2 em { font-style: italic; color: var(--terra); }
+    .promo-content p {
+      font-size: 16px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+    .promo-tag {
+      display: inline-block;
+      background: var(--terra);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      margin-bottom: 16px;
+    }
+
+    /* ── Contact ── */
+    .contact-section { padding: 96px 24px; }
+    .contact-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .contact-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      margin-bottom: 20px;
+      color: var(--fg);
+    }
+    .contact-content h2 em { font-style: italic; color: var(--terra); }
+    .contact-content p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 36px;
+    }
+
+    .contact-items { display: flex; flex-direction: column; gap: 20px; }
+    .contact-item { display: flex; align-items: flex-start; gap: 16px; }
+    .contact-item-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--card-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-item-icon svg { width: 20px; height: 20px; stroke: var(--fg); fill: none; stroke-width: 1.5; }
+    .contact-item-text strong { display: block; font-weight: 600; font-size: 14px; color: var(--fg); margin-bottom: 4px; }
+    .contact-item-text a,
+    .contact-item-text span { font-size: 15px; color: var(--muted); text-decoration: none; line-height: 1.6; }
+    .contact-item-text a:hover { color: var(--terra); }
+
+    .hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; margin-top: 6px; }
+    .hours-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row strong { color: var(--fg); font-weight: 500; }
+
+    /* Contact form */
+    .contact-form-wrap {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 40px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+    }
+    .contact-form-wrap h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 28px;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      color: var(--fg);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 15px;
+      color: var(--fg);
+      outline: none;
+      transition: border-color .3s;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(140,154,132,.12);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* ── CTA Banner ── */
+    .cta-section {
+      padding: 80px 24px;
+      background: var(--fg);
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 700;
+      color: var(--bg);
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    .cta-section h2 em { font-style: italic; color: var(--secondary); }
+
+    /* ── Handwriting Underline ── */
+    .hw-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .hw-svg {
+      position: absolute;
+      bottom: -6px;
+      left: -8%;
+      width: 116%;
+      height: 18px;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .hw-path {
+      fill: none;
+      stroke: var(--secondary);
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+      transition: stroke-dashoffset 2s cubic-bezier(.43,.13,.23,.96);
+    }
+    .hw-path.drawn { stroke-dashoffset: 0; }
+    .cta-section p {
+      font-size: 17px;
+      color: rgba(249,248,244,.6);
+      margin-bottom: 36px;
+    }
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--terra);
+      color: var(--white);
+      padding: 16px 36px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: opacity .3s, transform .3s;
+    }
+    .btn-cta:hover { opacity: .9; transform: translateY(-2px); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--fg);
+      border-top: 1px solid rgba(249,248,244,.1);
+      padding: 48px 24px 32px;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .footer-brand p {
+      font-size: 14px;
+      color: rgba(249,248,244,.45);
+      margin-top: 12px;
+      max-width: 240px;
+      line-height: 1.7;
+    }
+    .footer-brand .logo-text { color: var(--bg); font-size: 20px; }
+    .footer-brand .logo-icon { background: var(--bg); }
+    .footer-brand .logo-icon svg { stroke: var(--fg); }
+
+    .footer-links h4 {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(249,248,244,.4);
+      margin-bottom: 16px;
+    }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a {
+      font-size: 14px;
+      color: rgba(249,248,244,.6);
+      text-decoration: none;
+      transition: color .3s;
+    }
+    .footer-links a:hover { color: var(--bg); }
+    .footer-bottom {
+      border-top: 1px solid rgba(249,248,244,.08);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom p { font-size: 13px; color: rgba(249,248,244,.35); }
+
+    /* ── WhatsApp float ── */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 500;
+      width: 56px;
+      height: 56px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(37,211,102,.35);
+      transition: transform .3s, box-shadow .3s;
+      text-decoration: none;
+    }
+    .whatsapp-float:hover { transform: scale(1.1) translateY(-2px); box-shadow: 0 12px 28px rgba(37,211,102,.45); }
+    .whatsapp-float svg { width: 28px; height: 28px; fill: white; }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s ease-out, transform .7s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+    .reveal-delay-5 { transition-delay: .5s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .service-card:nth-child(2) { transform: none; }
+      .service-card:nth-child(2):hover { transform: translateY(-6px); }
+      .service-card:nth-child(5) { transform: none; }
+      .service-card:nth-child(5):hover { transform: translateY(-6px); }
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 48px; padding: 60px 24px; }
+      .hero-visual { max-width: 400px; margin: 0 auto; }
+      .hero-card { left: 0; }
+      .about-inner { grid-template-columns: 1fr; gap: 48px; }
+      .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item { border-right: none; border-bottom: 1px solid rgba(249,248,244,.1); }
+      .stat-item:nth-child(odd) { border-right: 1px solid rgba(249,248,244,.1); }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .testimonial-card:nth-child(2) { transform: none; }
+      .testimonial-card:nth-child(2):hover { transform: translateY(-4px); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .btn-nav { display: none; }
+      .hamburger { display: flex; flex-direction: column; }
+      .services-grid { grid-template-columns: 1fr; }
+      .about-img-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .about-img-2 { margin-top: 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .promo-inner { flex-direction: column; }
+      .footer-top { flex-direction: column; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 38px; }
+      .hero-card-2 { display: none; }
+      .stat-number { font-size: 40px; }
+      .contact-form-wrap { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Paper Grain -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/5516993480097" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Contato via WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+  </svg>
+</a>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C9 6 4 8 4 13a8 8 0 0016 0c0-5-5-7-8-11z"/><path d="M12 12c0 0-3-2-3-4s3-3 3-1c0-2 3-1 3 1s-3 4-3 4z"/></svg>
+      </div>
+      <span class="logo-text">Mabezi <span>Studio</span></span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#depoimentos">Depoimentos</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+
+    <a href="#contato" class="btn-nav">Agendar</a>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="closeMenu">×</button>
+  <a href="#servicos" class="mobile-link">Serviços</a>
+  <a href="#sobre" class="mobile-link">Sobre</a>
+  <a href="#depoimentos" class="mobile-link">Depoimentos</a>
+  <a href="#contato" class="mobile-link">Contato</a>
+  <a href="#contato" class="btn-primary" style="margin-top:8px;">Agendar Agora</a>
+</div>
+
+<!-- ── Hero ── -->
+<section>
+  <div class="hero">
+    <div class="hero-content">
+      <h1 class="reveal">
+        O studio onde<br>
+        sua beleza<br>
+        <em class="hero-cycle-word" id="cycleWord">deslumbra.</em>
+      </h1>
+
+      <p class="reveal reveal-delay-1">
+        Make e penteados que encantam, com o famoso Pacote Flash. Ambiente
+        aconchegante no Centro de Ribeirão Preto - SP.
+      </p>
+
+      <div class="hero-actions reveal reveal-delay-2">
+        <a href="#contato" class="btn-primary magnet-btn" id="magnetBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Agendar Horário
+        </a>
+        <a href="#servicos" class="btn-secondary">Ver Serviços</a>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal reveal-delay-1">
+      <div class="hero-img-wrap">
+        <img src="assets/mabezi-studio/hero.jpg" alt="Atendimento no Mabezi Studio" />
+      </div>
+
+      <!-- Floating cards -->
+      <div class="hero-card">
+        <div class="hero-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="hero-card-text">
+          <strong>Pacote Flash</strong>
+          <span>make + penteado em um só lugar</span>
+        </div>
+      </div>
+
+
+      <!-- Decorative SVG line -->
+      <svg class="deco-line" viewBox="0 0 80 200" fill="none" stroke="#8C9A84" stroke-width="1">
+        <path d="M40 0 C60 40 20 80 40 120 C60 160 20 180 40 200" stroke-dasharray="4 4"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats ── -->
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-number">⚡</div>
+      <div class="stat-label">Pacote Flash</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-number"><span class="count-up" data-target="100">0</span><em>%</em></div>
+      <div class="stat-label">Satisfação</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-number">2</div>
+      <div class="stat-label">Especialidades</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Clientes Felizes</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Services ── -->
+<section class="services-section" id="servicos">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Nossos Serviços</span>
+      <h2 class="section-title">Make, penteado e<br><em>muito charme.</em></h2>
+      <p class="section-sub">Produtos de qualidade, mãos habilidosas e um ambiente aconchegante para você brilhar em qualquer ocasião.</p>
+    </div>
+
+    <div class="services-grid">
+      <!-- 1 -->
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22C6.5 22 2 17.5 2 12S6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <h3>Maquiagem Profissional</h3>
+        <p>Make para casamentos, formaturas, festas e eventos. Visual deslumbrante com produtos premium de longa duração.</p>
+      </div>
+      <!-- 2 -->
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M9.5 2a2.5 2.5 0 0 1 0 5H9a7 7 0 0 0-7 7v1a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-1a7 7 0 0 0-7-7h-.5A2.5 2.5 0 0 1 9.5 2z"/></svg>
+        </div>
+        <h3>Penteado & Escova</h3>
+        <p>Penteados e escova modeladora para qualquer ocasião. Do romântico ao moderno, sempre com acabamento impecável.</p>
+      </div>
+      <!-- 3 -->
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3>Pacote Flash ⚡</h3>
+        <p>Make + penteado em um único pacote ágil e completo. Perfeito para quem quer brilhar sem perder tempo.</p>
+      </div>
+      <!-- 4 -->
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3>Make para Noiva</h3>
+        <p>Maquiagem especial para o grande dia com making of. Técnica de longa duração para você arrasar do início ao fim.</p>
+      </div>
+      <!-- 5 -->
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <h3>Penteado para Noiva</h3>
+        <p>Penteados elegantes que harmonizam com o estilo do casamento — do clássico ao contemporâneo.</p>
+      </div>
+      <!-- 6 -->
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4l-5 5-4-4-8 8"/></svg>
+        </div>
+        <h3>Escova Modeladora</h3>
+        <p>Escova profissional para deixar os fios lisos, com volume ou ondulados. Resultado que dura e impressiona.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Promo Banner ── -->
+<section class="promo-section">
+  <div class="promo-inner">
+    <div class="promo-content reveal">
+      <span class="promo-tag">Mais Pedido</span>
+      <h2>Pacote Flash:<br><em>make + penteado.</em></h2>
+      <p>Rápido, completo e com resultado que surpreende. O favorito das clientes do Mabezi Studio.</p>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <a href="#contato" class="btn-primary" style="font-size:14px;padding:16px 32px;">
+        Quero o Flash
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Gallery ── -->
+<section class="gallery-section" id="galeria">
+  <div class="gallery-header reveal">
+    <div class="gallery-header-left">
+      <span class="section-tag">Nosso Trabalho</span>
+      <h2>Resultados que<br><em>falam por si.</em></h2>
+      <p>Make, penteado e muito charme. Cada trabalho feito com cuidado e técnica pelo Mabezi Studio.</p>
+    </div>
+    <div class="gallery-nav">
+      <button class="gallery-nav-btn" id="galleryPrev" aria-label="Anterior">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="gallery-nav-btn" id="galleryNext" aria-label="Próximo">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="gallery-track-wrap">
+    <div class="gallery-track" id="galleryTrack">
+
+      <!-- Card 1 -->
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80" alt="Make Noiva" loading="lazy" />
+        <div class="gallery-card-overlay"></div>
+        <div class="gallery-card-content">
+          <span class="gallery-card-tag">Noiva</span>
+          <h3>Make de Casamento</h3>
+          <p>Visual impecável para o dia mais especial</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80" alt="Penteado" loading="lazy" />
+        <div class="gallery-card-overlay"></div>
+        <div class="gallery-card-content">
+          <span class="gallery-card-tag">Penteado</span>
+          <h3>Penteado de Noiva</h3>
+          <p>Elegância que combina com o grande dia</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1560869713-7d0a29430803?w=600&q=80" alt="Pacote Flash" loading="lazy" />
+        <div class="gallery-card-overlay"></div>
+        <div class="gallery-card-content">
+          <span class="gallery-card-tag">Flash ⚡</span>
+          <h3>Pacote Flash</h3>
+          <p>Make + penteado rápido e deslumbrante</p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600&q=80" alt="Escova" loading="lazy" />
+        <div class="gallery-card-overlay"></div>
+        <div class="gallery-card-content">
+          <span class="gallery-card-tag">Escova</span>
+          <h3>Escova Modeladora</h3>
+          <p>Liso, ondulado ou com volume — você escolhe</p>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80" alt="Make Festa" loading="lazy" />
+        <div class="gallery-card-overlay"></div>
+        <div class="gallery-card-content">
+          <span class="gallery-card-tag">Festa</span>
+          <h3>Make para Evento</h3>
+          <p>Visual marcante para qualquer ocasião especial</p>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="gallery-card">
+        <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=80" alt="Penteado Festa" loading="lazy" />
+        <div class="gallery-card-overlay"></div>
+        <div class="gallery-card-content">
+          <span class="gallery-card-tag">Social</span>
+          <h3>Penteado Social</h3>
+          <p>Criações únicas para festas e eventos</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="gallery-dots" id="galleryDots"></div>
+</section>
+
+<!-- ── About ── -->
+<section class="about-section" id="sobre">
+  <div class="about-inner">
+    <div class="about-img-grid reveal">
+      <div class="about-img about-img-1">
+        <img src="assets/mabezi-studio/sobre-1.jpg" alt="Serviço no Mabezi Studio" />
+      </div>
+      <div class="about-img about-img-2">
+        <img src="assets/mabezi-studio/sobre-2.jpg" alt="Profissional realizando design de sobrancelha" />
+      </div>
+    </div>
+
+    <div class="about-content reveal reveal-delay-1">
+      <span class="section-tag">Sobre Nós</span>
+      <h2>Um studio com<br>alma e <em>simpatia</em></h2>
+      <p>
+        No Centro de Ribeirão Preto, o Mabezi Studio é um espaço aconchegante onde cada cliente é recebida com simpatia, cuidado e muito profissionalismo.
+      </p>
+      <p>
+        Especialistas em make e penteados, com o famoso Pacote Flash que une agilidade e resultado de nível profissional — porque você merece brilhar sem complicações.
+      </p>
+
+      <div class="about-pillars">
+        <div class="pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="pillar-text">
+            <strong>Pacote Flash Exclusivo</strong>
+            <span>Make + penteado ágil com resultado surpreendente</span>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="pillar-text">
+            <strong>Simpatia & Profissionalismo</strong>
+            <span>Atendimento caloroso e técnica de alto nível</span>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <div class="pillar-text">
+            <strong>Produtos de Qualidade</strong>
+            <span>Marcas premium para make de longa duração</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Testimonials ── -->
+<section class="testimonials-section" id="depoimentos">
+  <div class="testimonials-inner">
+
+    <!-- Left: heading + dots -->
+    <div class="testimonials-left reveal">
+      <span class="section-tag">Depoimentos</span>
+      <h2>O que nossas<br>clientes <em>dizem</em></h2>
+      <p>Simpatia, qualidade e resultados que encantam. Veja o que as clientes falam sobre o Mabezi Studio.</p>
+      <div class="testimonial-dots" id="testimonialDots">
+        <button class="testimonial-dot active" data-index="0" aria-label="Depoimento 1"></button>
+        <button class="testimonial-dot" data-index="1" aria-label="Depoimento 2"></button>
+        <button class="testimonial-dot" data-index="2" aria-label="Depoimento 3"></button>
+      </div>
+    </div>
+
+    <!-- Right: animated cards -->
+    <div class="testimonials-right reveal reveal-delay-1">
+
+      <!-- Card 1 -->
+      <div class="testimonial-slide active">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <blockquote>"Make e penteado maravilhosos!! Fiz o pacote flash e me surpreendi muito. Atendimento excelente, produtos de qualidade, simpatia e profissionalismo. O local é bem aconchegante tbm! Recomendo muito!"</blockquote>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <div class="author-avatar">C</div>
+            <div class="author-info">
+              <strong>Cliente Google</strong>
+              <span>Avaliação no Google</span>
+              <div class="google-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                Google Maps
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="testimonial-slide">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <blockquote>"Fiz make aqui para minha formatura e ficou absolutamente incrível! Durou a noite toda, acabamento perfeito e a profissional é super talentosa. Ambiente lindo e acolhedor. Voltarei sempre!"</blockquote>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <div class="author-avatar">J</div>
+            <div class="author-info">
+              <strong>Juliana Ferreira</strong>
+              <span>Cliente do studio</span>
+              <div class="google-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                Google Maps
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="testimonial-slide">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <blockquote>"Passei pelo pacote flash antes de um evento e me arrepiei! Em pouco tempo fiquei com make e penteado deslumbrantes. Profissional incrível, super simpática. O Mabezi Studio é referência em Ribeirão!"</blockquote>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <div class="author-avatar">R</div>
+            <div class="author-info">
+              <strong>Raquel Moura</strong>
+              <span>Cliente fiel</span>
+              <div class="google-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                Google Maps
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decorative blobs -->
+      <div class="t-deco-1"></div>
+      <div class="t-deco-2"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section class="contact-section" id="contato">
+  <div class="contact-inner">
+    <div class="contact-content reveal">
+      <span class="section-tag">Fale Conosco</span>
+      <h2>Agende seu<br>horário <em>agora.</em></h2>
+      <p>Estamos prontas para arrasar com você! Entre em contato pelo WhatsApp, ligue ou preencha o formulário.</p>
+
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <strong>Endereço</strong>
+            <a href="https://maps.google.com/?q=R.+Cmte.+Marcondes+Salgado,+1134,+Centro,+Ribeirão+Preto+-+SP" target="_blank" rel="noopener">
+              R. Cmte. Marcondes Salgado, 1134 - Sala 1118<br>Centro, Ribeirão Preto - SP
+            </a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012.18 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 8.15a16 16 0 006 6l1.51-1.52a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <strong>Telefone / WhatsApp</strong>
+            <a href="tel:+5516993480097">(16) 99348-0097</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <strong>Horários de Funcionamento</strong>
+            <div class="hours-grid">
+              <div class="hours-row"><span>Segunda</span><strong>08:00 – 19:00</strong></div>
+              <div class="hours-row"><span>Terça</span><strong>08:00 – 19:00</strong></div>
+              <div class="hours-row"><span>Quarta</span><strong>08:00 – 19:00</strong></div>
+              <div class="hours-row"><span>Quinta</span><strong>08:00 – 19:00</strong></div>
+              <div class="hours-row"><span>Sexta</span><strong>08:00 – 19:00</strong></div>
+              <div class="hours-row"><span>Sábado</span><strong>08:00 – 17:00</strong></div>
+              <div class="hours-row"><span>Domingo</span><strong>Fechado</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap reveal reveal-delay-1">
+      <h3>Agende seu horário</h3>
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" placeholder="Seu nome" required />
+          </div>
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="tel" placeholder="(16) 9xxxx-xxxx" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Serviço desejado</label>
+          <select required>
+            <option value="" disabled selected>Selecione um serviço</option>
+            <option>Pacote Flash (Make + Penteado)</option>
+            <option>Maquiagem Profissional</option>
+            <option>Penteado & Escova</option>
+            <option>Make para Noiva</option>
+            <option>Penteado para Noiva</option>
+            <option>Escova Modeladora</option>
+            <option>Outros</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mensagem (opcional)</label>
+          <textarea placeholder="Alguma preferência de data/horário?"></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
+          Enviar pelo WhatsApp
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="container">
+    <h2 class="reveal">
+      Pronta para se<br>
+      sentir <span class="hw-wrap"><em>incrível?</em><svg class="hw-svg" viewBox="0 0 200 18" xmlns="http://www.w3.org/2000/svg"><path class="hw-path" d="M 4 10 C 30 4, 70 14, 100 9 C 130 4, 165 13, 196 8"/></svg></span>
+    </h2>
+    <p class="reveal reveal-delay-1">
+      Ligue agora ou mande uma mensagem. Seu horário favorito espera por você.
+    </p>
+    <a href="https://wa.me/5516993480097?text=Olá!%20Gostaria%20de%20agendar%20um%20horário." target="_blank" rel="noopener" class="btn-cta reveal reveal-delay-2">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      Agendar pelo WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="1.5"><path d="M12 2C9 6 4 8 4 13a8 8 0 0016 0c0-5-5-7-8-11z"/></svg>
+          </div>
+          <span class="logo-text">Mabezi <span>Studio</span></span>
+        </a>
+        <p>Studio de make e penteados no Centro de Ribeirão Preto - SP. Pacote Flash e muito mais.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#servicos">Maquiagem Profissional</a></li>
+          <li><a href="#servicos">Penteado & Escova</a></li>
+          <li><a href="#servicos">Pacote Flash</a></li>
+          <li><a href="#servicos">Make para Noiva</a></li>
+          <li><a href="#servicos">Penteado para Noiva</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="tel:+5516993480097">(16) 99348-0097</a></li>
+          <li><a href="https://wa.me/5516993480097" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="https://maps.google.com/?q=R.+Cmte.+Marcondes+Salgado,+1134,+Centro,+Ribeirão+Preto" target="_blank" rel="noopener">Como Chegar</a></li>
+          <li><a href="#contato">Agendar Horário</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Mabezi Studio · Centro, Ribeirão Preto - SP</p>
+      <p style="display:flex;align-items:center;gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="stroke:rgba(249,248,244,.35)"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        R. Cmte. Marcondes Salgado, 1134 · Centro
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  const hamburger = document.getElementById('hamburgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeBtn = document.getElementById('closeMenu');
+
+  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+  closeBtn.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // ── Scroll Expansion Hero ──
+  (function() {
+    const wrap = document.querySelector('.hero-img-wrap');
+    if (!wrap) return;
+    const section = wrap.closest('section');
+    let ticking = false;
+
+    function update() {
+      const heroH   = section.offsetHeight;
+      const progress = Math.min(Math.max(window.scrollY / heroH, 0), 1);
+      const p = 1 - progress; // 1 = blob total, 0 = retângulo
+
+      // Blob orgânico → retângulo arredondado suavemente
+      const br = p > 0.01
+        ? `${50 * p}% ${50 * p}% ${50 * p}% ${50 * p}% / ${60 * p}% ${60 * p}% ${40 * p}% ${40 * p}%`
+        : '40px';
+
+      wrap.style.borderRadius = br;
+      // Leve escala cinematográfica
+      wrap.style.transform = `scale(${1 + progress * 0.06})`;
+      // Parallax suave na imagem interna
+      const img = wrap.querySelector('img');
+      if (img) img.style.transform = `scale(${1.05 + progress * 0.04}) translateY(${-progress * 14}px)`;
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+
+    update();
+  })();
+
+  // ── Magnetize Button ──
+  (function() {
+    const btn = document.getElementById('magnetBtn');
+    if (!btn) return;
+    const count = 12;
+
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('span');
+      p.className = 'magnet-particle';
+      // Posição inicial espalhada em círculo ao redor do botão
+      const angle  = (i / count) * Math.PI * 2;
+      const radius = 52 + Math.random() * 32;
+      const ox = Math.round(Math.cos(angle) * radius);
+      const oy = Math.round(Math.sin(angle) * radius);
+      // Estado disperso
+      p.style.transform = `translate(calc(-50% + ${ox}px), calc(-50% + ${oy}px))`;
+      // Ao hover, CSS leva para translate(-50%,-50%)
+      // Ao sair, volta para posição original via JS
+      p.dataset.ox = ox;
+      p.dataset.oy = oy;
+      btn.appendChild(p);
+    }
+
+    btn.addEventListener('mouseleave', () => {
+      btn.querySelectorAll('.magnet-particle').forEach(p => {
+        p.style.transform = `translate(calc(-50% + ${p.dataset.ox}px), calc(-50% + ${p.dataset.oy}px))`;
+        p.style.opacity = '0';
+      });
+    });
+  })();
+
+  // ── Gallery Carousel ──
+  (function() {
+    const track    = document.getElementById('galleryTrack');
+    const prevBtn  = document.getElementById('galleryPrev');
+    const nextBtn  = document.getElementById('galleryNext');
+    const dotsWrap = document.getElementById('galleryDots');
+    if (!track) return;
+
+    const cards    = track.querySelectorAll('.gallery-card');
+    const total    = cards.length;
+    let current    = 0;
+
+    // Criar dots
+    const dots = [];
+    cards.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', `Foto ${i + 1}`);
+      d.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(d);
+      dots.push(d);
+    });
+
+    function getCardWidth() {
+      return cards[0].offsetWidth + 20; // card + gap
+    }
+
+    function goTo(index) {
+      current = Math.max(0, Math.min(index, total - 1));
+      track.style.transform = `translateX(-${current * getCardWidth()}px)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current >= total - 1;
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+    goTo(0);
+
+    // Suporte a touch/swipe
+    let startX = 0;
+    track.addEventListener('touchstart', e => startX = e.touches[0].clientX, { passive: true });
+    track.addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
+  })();
+
+  // ── Animated Numbers ──
+  (function() {
+    const easeOutExpo = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
+    function animateCount(el) {
+      const target   = parseInt(el.dataset.target);
+      const duration = 2000;
+      const start    = performance.now();
+
+      function step(now) {
+        const elapsed  = Math.min(now - start, duration);
+        const progress = easeOutExpo(elapsed / duration);
+        const value    = Math.floor(progress * target);
+        el.textContent = value;
+        if (elapsed < duration) requestAnimationFrame(step);
+        else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    }
+
+    const counters = document.querySelectorAll('.count-up');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCount(e.target);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(c => obs.observe(c));
+  })();
+
+  // ── Handwriting Underline ──
+  (function() {
+    const path = document.querySelector('.hw-path');
+    if (!path) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          setTimeout(() => path.classList.add('drawn'), 300);
+          obs.disconnect();
+        }
+      });
+    }, { threshold: 0.6 });
+    obs.observe(path.closest('.hw-wrap'));
+  })();
+
+  // ── Animated Text Cycle ──
+  (function() {
+    const words   = ['deslumbra.', 'encanta.', 'brilha.', 'transforma.'];
+    const el      = document.getElementById('cycleWord');
+    if (!el) return;
+    let current   = 0;
+
+    function next() {
+      // 1. Fade out suavemente (1.1s de transition CSS)
+      el.classList.add('fading');
+
+      setTimeout(() => {
+        // 2. Troca o texto enquanto invisível
+        current = (current + 1) % words.length;
+        el.textContent = words[current];
+        // Força reflow para a transition ser reconhecida
+        void el.offsetWidth;
+        // 3. Fade in suavemente
+        el.classList.remove('fading');
+      }, 1150); // Espera a saída completar
+    }
+
+    setInterval(next, 2800);
+  })();
+
+  // ── Animated Testimonials ──
+  (function() {
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const dots   = document.querySelectorAll('.testimonial-dot');
+    let current  = 0;
+    let timer;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = (index + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function startTimer() {
+      timer = setInterval(() => goTo(current + 1), 6000);
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        clearInterval(timer);
+        goTo(parseInt(dot.dataset.index));
+        startTimer();
+      });
+    });
+
+    startTimer();
+  })();
+
+  // WhatsApp form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.querySelector('input[type="text"]').value;
+    const phone = form.querySelector('input[type="tel"]').value;
+    const service = form.querySelector('select').value;
+    const message = form.querySelector('textarea').value;
+
+    const text = `Olá! Gostaria de agendar um horário.\n\n*Nome:* ${name}\n*Telefone:* ${phone}\n*Serviço:* ${service}${message ? '\n*Obs:* ' + message : ''}`;
+    window.open(`https://wa.me/5516993480097?text=${encodeURIComponent(text)}`, '_blank');
+  }
+</script>
+</body>
+</html>
